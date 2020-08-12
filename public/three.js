@@ -1,13 +1,27 @@
 const winWidth = window.innerWidth;
 const winHeight = window.innerHeight;
 
-let scene, camera, renderer, item, composer, glslPass, geometry, noise;
-var gui = null;
+
+let scene, camera, renderer, item, composer, glslPass, geometry, noise, controls;
+let gui = null;
+let mesh;
+let strDownloadMime = "image/octet-stream";
 
 init();
 update();
 
 function init(){
+
+  var saveLink = document.createElement('div');
+        saveLink.style.position = 'absolute';
+        saveLink.style.top = '10px';
+        saveLink.style.width = '100%';
+        saveLink.style.color = 'white !important';
+        saveLink.style.textAlign = 'center';
+        saveLink.innerHTML =
+            '<a href="#" id="saveLink">Save Frame</a>';
+        document.body.appendChild(saveLink);
+        document.getElementById("saveLink").addEventListener('click', saveAsImage);
 
   // scene and camera positioning
   scene = new THREE.Scene();
@@ -20,7 +34,10 @@ function init(){
   scene.add(light);
   
   // render
-  renderer = new THREE.WebGLRenderer();
+  renderer = new THREE.WebGLRenderer({
+    preserveDrawingBuffer: true
+  });
+  
   renderer.setSize(winWidth, winHeight);
 
   //geometry
@@ -34,7 +51,6 @@ function init(){
     noise = v.z;
   }
 
-  console.log(noise)
   const material = new THREE.MeshStandardMaterial({
     color:0x000000,
     wireframe: true
@@ -44,46 +60,78 @@ function init(){
 
   item.rotation.x = Math.PI / 2;
   scene.add(item);
+  
+
+  controls = new THREE.OrbitControls(camera,renderer.domElement);
+
+  document.getElementById('container').appendChild(renderer.domElement);
+
+  window.addEventListener('resize', resize, false);
 
   // GUI
   const params = new function() {
-    this.rotationX = 0
-    this.rotationY = 0
     this.noise = noise
   }
 
   gui = new dat.GUI({
     height : 5 * 32 - 1
   });
-  gui.add(params, 'rotationX', 0, 10).onChange( function() {
-    item.rotation.x = (params.rotationX);
-  });
-  gui.add(params, 'rotationY', 0, 10).onChange( function() {
-    item.rotation.y = (params.rotationY);
-  });
-  gui.add(params, 'noise', -25, 25).onChange( function() {
+  gui.add(params, 'noise', -100, 100).onChange( function() {
     for(var i = 0, l = geometry.vertices.length; i < l; i++) {
       var v = geometry.vertices[i];
       v.z = simplex.noise2D(v.x / params.noise, v.y / params.noise) * 20;
     }
   });
   
-  //post processing
-  // composer = new THREE.EffectComposer(renderer); 
-  // const renderPass = new THREE.RenderPass(scene, camera);
-
-  // // renderPass.renderToScreen = true;
-  // composer.addPass( renderPass ); 
-
-  // glslPass = new THREE.FilmPass(1);
-  // glslPass.renderToScreen = true;
-  // composer.addPass(glslPass);
+}
 
 
-  document.getElementById('canvas').appendChild(renderer.domElement);
+  // const c = renderer.domElement;
+  // const context = renderer.context;
+  // const html = c;
+  // const data = { html: html }
+  // const json = JSON.stringify(data)
+  // console.log(context)
+  // //post to api endpoint
+  // //pass data into body
+  // fetch('http://localhost:8000/api', 
+  // {
+  //   method:'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: json,
+  // })
+  // .then(json => {console.log('Success: ', json) })
+  // .catch(error => {console.error('Error:', error) })  .catch(error => {console.error('Error:', error) })
+// }
 
-  window.addEventListener('resize', resize, false);
-  
+function saveAsImage() {
+  var imgData, imgNode;
+
+  try {
+      var strMime = "image/jpeg";
+      imgData = renderer.domElement.toDataURL(strMime);
+
+      saveFile(imgData.replace(strMime, strDownloadMime), "test.jpg");
+
+  } catch (e) {
+      console.log(e);
+      return;
+  }
+}
+
+var saveFile = function (strData, filename) {
+var link = document.createElement('a');
+if (typeof link.download === 'string') {
+    document.body.appendChild(link); //Firefox requires the link to be in the body
+    link.download = filename;
+    link.href = strData;
+    link.click();
+    document.body.removeChild(link); //remove the link when done
+} else {
+    location.replace(uri);
+}
 }
 
 function update(){
