@@ -93,7 +93,7 @@ function saveAsImage() {
       var strMime = "image/jpeg";
       imgData = renderer.domElement.toDataURL(strMime);
 
-      saveFile(imgData.replace(strMime, strDownloadMime), "test.jpg");
+      saveFile(imgData.replace(strMime, strDownloadMime), "Artwork.jpg");
 
   } catch (e) {
       console.log(e);
