@@ -11,23 +11,24 @@ init();
 update();
 
 function init(){
-
   var saveLink = document.createElement('div');
-        saveLink.style.position = 'absolute';
-        saveLink.style.top = '10px';
-        saveLink.style.width = '100%';
+        saveLink.setAttribute('id', 'export-image')
+        saveLink.setAttribute('class', 'col-sm-6 col-md-6 col-lg-6')
+        saveLink.style.top = '20px';
+        saveLink.style.postion = 'absolute';
+        saveLink.style.zIndex = '99';
         saveLink.style.color = 'white !important';
-        saveLink.style.textAlign = 'center';
+        saveLink.style.textAlign = 'left';
         saveLink.innerHTML =
-            '<a href="#" id="saveLink">Save Frame</a>';
-        document.body.appendChild(saveLink);
+            '<button class="btn-outline-light btn" id="saveLink">Export Art</button>';
+        document.body.prepend(saveLink);
         document.getElementById("saveLink").addEventListener('click', saveAsImage);
 
   // scene and camera positioning
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);
   camera = new THREE.PerspectiveCamera(75, winWidth/winHeight, 0.01, 1000);
-  camera.position.set( 0,0,50 );
+  camera.position.set( 0,0,30 );
   
   // directional light
   const light = new THREE.DirectionalLight(0xffffff, .9);
@@ -84,27 +85,6 @@ function init(){
   });
   
 }
-
-
-  // const c = renderer.domElement;
-  // const context = renderer.context;
-  // const html = c;
-  // const data = { html: html }
-  // const json = JSON.stringify(data)
-  // console.log(context)
-  // //post to api endpoint
-  // //pass data into body
-  // fetch('http://localhost:8000/api', 
-  // {
-  //   method:'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-  //   body: json,
-  // })
-  // .then(json => {console.log('Success: ', json) })
-  // .catch(error => {console.error('Error:', error) })  .catch(error => {console.error('Error:', error) })
-// }
 
 function saveAsImage() {
   var imgData, imgNode;
