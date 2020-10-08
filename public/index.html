@@ -10,11 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
     <style type="text/css">
     body{
         padding:0;
         margin:0;
         position: relative;
+        font-family: 'Courier Prime', monospace;
     }
 
     .main{
@@ -49,7 +51,7 @@
 
     #cover #cover-content .title, #cover #cover-content .btn{
         position: relative;
-        top: 50px;
+        top: 60px;
     }
 
     #cover #cover-content .title-wrapper, #cover #cover-content .btn-wrapper {
@@ -202,8 +204,17 @@
         #saveLink{
            display: none !important;
         }
-    }
 
+        .modal{
+            max-height: 100%!important;
+            overflow-y: auto!important;
+            opacity: 0;
+        }
+
+        .title{
+            font-size: 2rem;
+        }
+    }
     </style>    
 </head>
 <body>
@@ -212,7 +223,7 @@
     <div id="cover">
         <div id="cover-content">
             <div class="title-wrapper">
-                <h4 class="title">Noise Generator</h4>
+                <h1 class="title">noisegen.io</h1>
             </div>
             <div class="btn-wrapper text-center">
                 <button class="btn-outline-light btn">Enter</button>
@@ -221,6 +232,33 @@
         <div id="cover-bg"></div>
     </div>
     <div id="container"></div>
+
+    <!-- instructions modal -->
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Hello! Welcome to noisegen.io</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Noisegen, is an experimental app that lets you create different shapes using Perlin Noise. What is Perlin Noise you ask? <a href="https://medium.com/swlh/using-the-svg-feturbulence-filter-for-wave-effects-2b8cb2546ee6" target="_blank"> Check out this code along article. </a></p>
+              <br/>
+              <p><strong>Directions: </strong> Use your mouse, touchpad or finger on mobile to rotate and scale the mesh object. On the top right corner, use the bar to increment and decrement the noise that is passed into the mesh.</p> 
+              <br/> 
+              <p>When your done, click the <strong>Export Art</strong> button to export your art in jpg format.</p>
+              <br/>
+              On mobile, take a snapshot of your art and crop it using your phones default image editting tool.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- close instructions modal -->
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
