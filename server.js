@@ -8,7 +8,7 @@ const { createCanvas,loadImage } = require('canvas')
 
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 app.use(bodyParser.json());
-app.use(express.static('docs'))
+app.use(express.static('./'))
 
 // app.get('/api', (req, res) => {
 //   res.send('api endpoint')
